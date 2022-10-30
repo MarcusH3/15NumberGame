@@ -166,17 +166,23 @@ public class MyGameFrame extends JFrame implements ActionListener {
         Point p = new Point(b.getX(),b.getY());
         Point p1 = new Point();
 
+
         if(p.getX()+X_SIZE == b16.getX() && p.getY() == b16.getY()){
             p1 = p.getLocation();
             p.setLocation(p.getX()+X_SIZE, p.getY());
             b.setLocation(p);
             b16.setLocation(p1);
 
+
+            /*String tempName = b16.getLabel();
+            b16.setLabel(b.getLabel());
+            b.setLabel(tempName);*/
+
             checkBoard(getGrid(p));
 
         }
         else if(p.getX()-X_SIZE == b16.getX() && p.getY() == b16.getY()){
-            p1 = p.getLocation();
+           p1 = p.getLocation();
             p.setLocation(p.getX()-X_SIZE, p.getY());
             b.setLocation(p);
             b16.setLocation(p1);
@@ -192,7 +198,7 @@ public class MyGameFrame extends JFrame implements ActionListener {
             checkBoard(getGrid(p));
         }
         else if(p.getX() == b16.getX() && p.getY()-Y_SIZE == b16.getY()){
-            p1 = p.getLocation();
+           p1 = p.getLocation();
             p.setLocation(p.getX(), p.getY()-Y_SIZE);
             b.setLocation(p);
             b16.setLocation(p1);
