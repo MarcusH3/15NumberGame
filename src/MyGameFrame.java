@@ -203,7 +203,7 @@ public class MyGameFrame extends JFrame implements ActionListener {
             b.setLocation(p);
             b16.setLocation(p1);
 
-            solveBoard();
+            //solveBoard();
             checkBoard(getGrid(p));
         }
     }
@@ -275,31 +275,26 @@ public class MyGameFrame extends JFrame implements ActionListener {
         return ai1;
     }
     public void solveBoard(){
-        b1.setLabel("1");
-        b2.setLabel("2");
-        b3.setLabel("3");
-        b4.setLabel("4");
-        b5.setLabel("5");
-        b6.setLabel("6");
-        b7.setLabel("7");
-        b8.setLabel("8");
-        b9.setLabel("9");
-        b10.setLabel("10");
-        b11.setLabel("11");
-        b12.setLabel("12");
-        b13.setLabel("13");
-        b14.setLabel("14");
-        b15.setLabel("15");
+        Arrays.sort(ai);
 
-        for (int i = 1; i < ai.length; i++) {
-            for (int j = 0; j < ai.length; j++) {
-                if(ai[i]>ai[j]){
-                    int temp = ai[i];
-                    ai[i] = ai[j];
-                    ai[j] = temp;
-                    ai1[i] = ai[i];
-                }
-            }
+        b1.setLabel(ai[0].toString());
+        b2.setLabel(ai[1].toString());
+        b3.setLabel(ai[2].toString());
+        b4.setLabel(ai[3].toString());
+        b5.setLabel(ai[4].toString());
+        b6.setLabel(ai[5].toString());
+        b7.setLabel(ai[6].toString());
+        b8.setLabel(ai[7].toString());
+        b9.setLabel(ai[8].toString());
+        b10.setLabel(ai[9].toString());
+        b11.setLabel(ai[10].toString());
+        b12.setLabel(ai[11].toString());
+        b13.setLabel(ai[12].toString());
+        b14.setLabel(ai[13].toString());
+        b15.setLabel(ai[14].toString());
+
+        for (int i = 0; i < ai.length; i++) {
+            ai1[i] = ai[i];
         }
         checkBoard(ai1);
     }
