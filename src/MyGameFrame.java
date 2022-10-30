@@ -30,7 +30,7 @@ public class MyGameFrame extends JFrame implements ActionListener {
 
     protected Integer[] ai = {1,2,3,4,5,6,7,8,9,10,11,12,13,14,15};
 
-    protected int[] ai1 = {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0};
+    protected int[] ai1 = {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0};
     static final int SCREEN_WIDTH = 600;
     static final int SCREEN_HEIGHT = 600;
 
@@ -177,8 +177,9 @@ public class MyGameFrame extends JFrame implements ActionListener {
             /*String tempName = b16.getLabel();
             b16.setLabel(b.getLabel());
             b.setLabel(tempName);*/
-
-            checkBoard(getGrid(p));
+            getGrid(b);
+            //solveBoard();
+            checkBoard(getGrid(b));
 
         }
         else if(p.getX()-X_SIZE == b16.getX() && p.getY() == b16.getY()){
@@ -187,7 +188,7 @@ public class MyGameFrame extends JFrame implements ActionListener {
             b.setLocation(p);
             b16.setLocation(p1);
 
-            checkBoard(getGrid(p));
+            checkBoard(getGrid(b));
         }
         else if( p.getX() == b16.getX() && p.getY()+Y_SIZE == b16.getY()){
             p1 = p.getLocation();
@@ -195,7 +196,7 @@ public class MyGameFrame extends JFrame implements ActionListener {
             b.setLocation(p);
             b16.setLocation(p1);
 
-            checkBoard(getGrid(p));
+            checkBoard(getGrid(b));
         }
         else if(p.getX() == b16.getX() && p.getY()-Y_SIZE == b16.getY()){
            p1 = p.getLocation();
@@ -204,7 +205,7 @@ public class MyGameFrame extends JFrame implements ActionListener {
             b16.setLocation(p1);
 
             //solveBoard();
-            checkBoard(getGrid(p));
+            checkBoard(getGrid(b));
         }
     }
     public void checkBoard(int[] i){
@@ -217,59 +218,65 @@ public class MyGameFrame extends JFrame implements ActionListener {
         }
 
     }
-    public int[] getGrid(Point p){
-        if(p.getX() == 1){
-            if(p.getY()==1){
-                ai1[0]=1;
+    public int[] getGrid(Button b){
+
+
+       if(b.getLocation().getX() == 1){
+            if(b.getLocation().getY()==1){
+                ai1[0]=Integer.parseInt(b.getLabel());
             }
-            else if(p.getY()==1+Y_SIZE){
-                ai1[1]=2;
+            else if(b.getLocation().getY()==1+Y_SIZE){
+                ai1[1]=Integer.parseInt(b.getLabel());
             }
-            else if(p.getY()==1+2*Y_SIZE){
-                ai1[2]=3;
+            else if(b.getLocation().getY()==1+2*Y_SIZE){
+                ai1[2]=Integer.parseInt(b.getLabel());
             }
-            else if(p.getY()==1+3*Y_SIZE){
-                ai1[3]=4;
-            }
-        }
-        else if(p.getX() == 1+X_SIZE){
-            if(p.getY()==1){
-                ai1[4]=5;
-            }
-            else if(p.getY()==1+Y_SIZE){
-                ai1[5]=6;
-            }
-            else if(p.getY()==1+2*Y_SIZE){
-                ai1[6]=7;
-            }
-            else if(p.getY()==1+3*Y_SIZE){
-                ai1[7]=8;
+            else if(b.getLocation().getY()==1+3*Y_SIZE){
+                ai1[3]=Integer.parseInt(b.getLabel());
             }
         }
-        else if (p.getX()==1+2*X_SIZE) {
-            if(p.getY()==1){
-                ai1[8]=9;
+        else if(b.getLocation().getX() == 1+X_SIZE){
+            if(b.getLocation().getY()==1){
+                ai1[4]=Integer.parseInt(b.getLabel());
             }
-            else if(p.getY()==1+Y_SIZE){
-                ai1[9]=10;
+            else if(b.getLocation().getY()==1+Y_SIZE){
+                ai1[5]=Integer.parseInt(b.getLabel());
             }
-            else if(p.getY()==1+2*Y_SIZE){
-                ai1[10]=11;
+            else if(b.getLocation().getY()==1+2*Y_SIZE){
+                ai1[6]=Integer.parseInt(b.getLabel());
             }
-            else if(p.getY()==1+3*Y_SIZE){
-                ai1[11]=12;
+            else if(b.getLocation().getY()==1+3*Y_SIZE){
+                ai1[7]=Integer.parseInt(b.getLabel());
             }
         }
-        else if (p.getX()==1+3*X_SIZE) {
-            if(p.getY()==1){
-                ai1[12]=13;
+        else if (b.getLocation().getX()==1+2*X_SIZE) {
+            if(b.getLocation().getY()==1){
+                ai1[8]=Integer.parseInt(b.getLabel());
             }
-            else if(p.getY()==1+Y_SIZE){
-                ai1[13]=14;
+            else if(b.getLocation().getY()==1+Y_SIZE){
+                ai1[9]=Integer.parseInt(b.getLabel());
             }
-            else if(p.getY()==1+2*Y_SIZE){
-                ai1[14]=15;
+            else if(b.getLocation().getY()==1+2*Y_SIZE){
+                ai1[10]=Integer.parseInt(b.getLabel());
             }
+            else if(b.getLocation().getY()==1+3*Y_SIZE){
+                ai1[11]=Integer.parseInt(b.getLabel());
+            }
+        }
+        else if (b.getLocation().getX()==1+3*X_SIZE) {
+            if(b.getLocation().getY()==1){
+                ai1[12]=Integer.parseInt(b.getLabel());
+            }
+            else if(b.getLocation().getY()==1+Y_SIZE){
+                ai1[13]=Integer.parseInt(b.getLabel());
+            }
+            else if(b.getLocation().getY()==1+2*Y_SIZE){
+                ai1[14]=Integer.parseInt(b.getLabel());
+            }
+            else if(b.getLocation().getY()==1+3*Y_SIZE){
+                ai1[15]=Integer.parseInt(b.getLabel());
+            }
+
 
         }
         return ai1;
