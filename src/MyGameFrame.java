@@ -85,6 +85,7 @@ public class MyGameFrame extends JFrame implements ActionListener {
         b15.addActionListener(this);
 
 
+
         add(b1);
         add(b2);
         add(b3);
