@@ -15,22 +15,10 @@ import java.util.Collections;
 
 public class GameFrameV2 extends JFrame implements ActionListener {
 
-    Button b1;
-    Button b2;
-    Button b3;
-    Button b4;
-    Button b5;
-    Button b6;
-    Button b7;
-    Button b8;
-    Button b9;
-    Button b10;
-    Button b11;
-    Button b12;
-    Button b13;
-    Button b14;
-    Button b15;
-    Button b16;
+    Button  b1, b2, b3, b4,
+            b5, b6, b7, b8,
+            b9, b10, b11, b12,
+            b13, b14,b15, b16;
 
     protected Integer[] ai = {1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15};
 
@@ -233,8 +221,13 @@ public class GameFrameV2 extends JFrame implements ActionListener {
             p.setLocation(p.getX() + X_SIZE, p.getY());
             b.setLocation(p);
             b16.setLocation(p1);
+            System.out.println(p.getY());
 
-
+            /*String tempName = b16.getLabel();
+            b16.setLabel(b.getLabel());
+            b.setLabel(tempName);*/
+            getGrid(b);
+            //solveBoard();
             checkBoard(getGrid(b));
 
         } else if (p.getX() - X_SIZE == b16.getX() && p.getY() == b16.getY()) {
@@ -257,6 +250,7 @@ public class GameFrameV2 extends JFrame implements ActionListener {
             b.setLocation(p);
             b16.setLocation(p1);
 
+            //solveBoard();
             checkBoard(getGrid(b));
         }
     }
@@ -367,7 +361,5 @@ public void shuffleBoard(){
     b15.setLabel(ai[14].toString());
 
 }
-public static void main(String[] args){
-    GameFrameV2 gf = new GameFrameV2();
-}
+
 }
