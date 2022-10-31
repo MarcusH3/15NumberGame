@@ -15,6 +15,8 @@ import java.util.Collections;
 
 public class GameFrameV2 extends JFrame implements ActionListener {
 
+    private final JButton[][] gameBoard = new JButton[4][4];
+
     Button  b1, b2, b3, b4,
             b5, b6, b7, b8,
             b9, b10, b11, b12,
@@ -167,7 +169,6 @@ public class GameFrameV2 extends JFrame implements ActionListener {
         setSize(SCREEN_WIDTH, SCREEN_HEIGHT);
         this.setVisible(true);
         this.setLocationRelativeTo(null);
-
 
     }
 
