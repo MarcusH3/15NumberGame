@@ -218,13 +218,7 @@ public class GameFrameV2 extends JFrame implements ActionListener {
             p.setLocation(p.getX() + X_SIZE, p.getY());
             b.setLocation(p);
             b16.setLocation(p1);
-            System.out.println(p.getY());
 
-            /*String tempName = b16.getLabel();
-            b16.setLabel(b.getLabel());
-            b.setLabel(tempName);*/
-            getGrid(b);
-            //solveBoard();
             checkBoard(getGrid(b));
 
         } else if (p.getX() - X_SIZE == b16.getX() && p.getY() == b16.getY()) {
