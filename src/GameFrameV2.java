@@ -205,9 +205,6 @@ public class GameFrameV2 extends JFrame implements ActionListener {
         } else if (e.getSource() == b15) {
             checkCross(b15);
         }
-
-
-
     }
 
     public void checkCross(Button b) {
@@ -340,7 +337,7 @@ public class GameFrameV2 extends JFrame implements ActionListener {
         }
         checkBoard(ai1);
     }
-public void shuffleBoard(){
+public void shuffleBoard() {
     Arrays.sort(ai);
     List<Integer> list = Arrays.asList(ai);
     Collections.shuffle(list);
@@ -360,6 +357,8 @@ public void shuffleBoard(){
     b14.setLabel(ai[13].toString());
     b15.setLabel(ai[14].toString());
 
-}
-
+        }
+        public static void main(String[] args) {
+            GameFrameV2 GF = new GameFrameV2();
+        }
 }
