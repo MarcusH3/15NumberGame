@@ -4,9 +4,15 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.Arrays;
+import java.util.Collections;
 import java.util.Random;
 
 public class GameFrameV2 extends JFrame implements ActionListener {
+
+    private final int X_SIZE = 96;
+    private final int Y_SIZE = 90;
+    private Point p = new Point();
     JButton[][] button;
     int[][] board;
     int row;
@@ -23,9 +29,7 @@ public class GameFrameV2 extends JFrame implements ActionListener {
     }
 
     public void frameGUI() {
-        //List<Integer> list = Arrays.asList(ai);
-        //Collections.shuffle(list);
-        //Arrays.sort(ai);
+
         frame = new JFrame("15-GAME");
         mainPanel = new JPanel();
         mainPanel.setLayout(new GridLayout(4, 4));
@@ -50,7 +54,7 @@ public class GameFrameV2 extends JFrame implements ActionListener {
         for (int i = 0; i < row; i++) {
             for (int j = 0; j < col; j++) {
                 button[i][j] = new JButton();
-                String text = i + "," + j;
+                String text = Integer.toString(board[i][j]);
                 button[i][j].setText(text);
                 button[i][j].addActionListener(this);
                 int val = board[i][j];
@@ -67,30 +71,13 @@ public class GameFrameV2 extends JFrame implements ActionListener {
         frame.add(mainPanel);
         frame.setVisible(true);
         frame.setSize(400, 400);
+        frame.setResizable(false);
         frame.setLocationRelativeTo(null);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
     }
 
     public void newGame() {
-        Random rand = new Random();
-        int[] ar = new int[16];
-        for (int i = 0; i < 16; i++) {
-            ar[i] = i + 1;
-        }
-        ar[15] = -1;
-        for (int i = 0; i < 16; i++) {
-            int index = rand.nextInt(16);
-            int temp = ar[i];
-            ar[i] = ar[index];
-            ar[index] = temp;
-        }
-        int count = 0;
-        for (int i = 0; i < row; i++) {
-            for (int j = 0; j < col; j++) {
-                board[i][j] = ar[count];
-                count = count + 1;
-            }
-        }
+        shuffleArray();
     }
 
     Boolean isSolved() {
@@ -117,41 +104,91 @@ public class GameFrameV2 extends JFrame implements ActionListener {
         frame.setLocationRelativeTo(null);
     }
     @Override
-    public void actionPerformed(ActionEvent ae)
-    {
+    public void actionPerformed(ActionEvent ae) {
         Boolean solution = isSolved();
-            if (solution == false)
-            {
-                String s = ae.getActionCommand().toString();
-                int r = Integer.parseInt(s.split(",")[0]);
-                int c = Integer.parseInt(s.split(",")[1]);
-                if (board[r][c] != 1)
-                {
-                    if (r + 1 < row && board[r + 1][c] == -1)
-                    {
-                        int temp = board[r][c];
-                        board[r][c] = board[r + 1][c];
-                        board[r + 1][c] = temp;
-                    } else if (r - 1 >= 0 && board[r - 1][c] == -1) {
-                        int temp = board[r][c];
-                        board[r][c] = board[r - 1][c];
-                        board[r - 1][c] = temp;
-                    } else if (c + 1 < col && board[r][c + 1] == -1) {
-                        int temp = board[r][c];
-                        board[r][c] = board[r][c + 1];
-                        board[r][c + 1] = temp;
-                    } else if (c - 1 >= 0 && board[r][c - 1] == -1) {
-                        int temp = board[r][c];
-                        board[r][c] = board[r][c - 1];
-                        board[r][c - 1] = temp;
-                    }
-                }
-                solution = isSolved();
-                if (solution == true)
-                {solvedItIs();
+
+        for (int i = 0; i < board.length; i++) {
+            for (int j = 0; j < board.length; j++) {
+                if(button[i][j]==ae.getSource()) {
+                    System.out.println(i +""+j);
+                    swapTiles(button[i][j]);
                 }
             }
         }
+    }
+
+
+    public boolean hasNeighbour(JButton b) {
+        int xValue = b.getX() / X_SIZE;
+        int yValue = b.getY() / Y_SIZE;
+
+            try {
+
+                if (board[yValue][xValue + 1] == 16) {
+                    p.setLocation(1+(1+xValue*X_SIZE),1+(yValue*Y_SIZE));
+                    return true;
+                }
+                else if (board[yValue][xValue - 1] == 16) {
+                    p.setLocation(1+((xValue-1)*X_SIZE),1+(yValue*Y_SIZE));
+                    return true;
+                }
+                else if (board[yValue + 1][xValue] == 16) {
+                    p.setLocation(1+((xValue)*X_SIZE),1+(1+yValue*Y_SIZE));
+                    return true;
+                }
+                else if (board[yValue - 1][xValue] == 16) {
+                    p.setLocation(1+((xValue)*X_SIZE),1+(1-yValue*Y_SIZE));
+                    return true;
+                }
+                return false;
+            }
+            catch (ArrayIndexOutOfBoundsException ae){
+                return false;
+            }
+        }
+
+        public void swapTiles(JButton b) {
+
+            if (hasNeighbour(b) == true) {
+                int getX = (int)p.getX();
+                int getY = (int)p.getY();
+
+                int xValue = getX / X_SIZE;
+                int yValue = getY / Y_SIZE;
+                int x = b.getX();
+                int y = b.getY();
+                b.setLocation(p);
+                button[yValue][xValue].setLocation(x, y);
+            }
+        }
+
+        public int[][] shuffleArray(){
+
+            int[] arr = new int[board.length* board.length];
+            for (int i = 0; i < board.length* board.length; i++) {
+                arr[i] = i+1;
+            }
+
+            Random r = new Random();
+
+            for (int i = 0; i < board.length* board.length; i++) {
+                    int randomIndexToSwap = r.nextInt(arr.length);
+                    int temp = arr[randomIndexToSwap];
+                    arr[randomIndexToSwap] = arr[i];
+                    arr[i] = temp;
+            }
+            int k = 0;
+            for (int i = 0; i < board.length; i++) {
+                for (int j = 0; j < board.length; j++) {
+                    board[i][j] = arr[k];
+                            k++;
+                }
+            }
+            return board;
+        }
+
+
+
         public static void main (String[]args){
         GameFrameV2 GF = new GameFrameV2();
     }
