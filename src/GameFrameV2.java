@@ -12,7 +12,6 @@ public class GameFrameV2 extends JFrame implements ActionListener {
 
     private final int X_SIZE = 96;
     private final int Y_SIZE = 90;
-    private Point p = new Point();
     JButton[][] button;
     int[][] board;
     int row;
@@ -106,12 +105,18 @@ public class GameFrameV2 extends JFrame implements ActionListener {
     @Override
     public void actionPerformed(ActionEvent ae) {
         Boolean solution = isSolved();
-
+        updateBoard();
         for (int i = 0; i < board.length; i++) {
             for (int j = 0; j < board.length; j++) {
                 if(button[i][j]==ae.getSource()) {
-                    System.out.println(i +""+j);
                     swapTiles(button[i][j]);
+
+
+                    for (int k = 0; k < 4; k++) {
+                        for (int l = 0; l < 4; l++) {
+                            System.out.println(board[k][l]);
+                        }
+                    }
                 }
             }
         }
@@ -121,44 +126,61 @@ public class GameFrameV2 extends JFrame implements ActionListener {
     public boolean hasNeighbour(JButton b) {
         int xValue = b.getX() / X_SIZE;
         int yValue = b.getY() / Y_SIZE;
+        int temp;
+
+
 
             try {
-
                 if (board[yValue][xValue + 1] == 16) {
-                    p.setLocation(1+(1+xValue*X_SIZE),1+(yValue*Y_SIZE));
+                    temp = Integer.parseInt(b.getText());
+                    board[yValue][xValue] = 16;
+                    board[yValue][xValue + 1] = temp;
                     return true;
                 }
-                else if (board[yValue][xValue - 1] == 16) {
-                    p.setLocation(1+((xValue-1)*X_SIZE),1+(yValue*Y_SIZE));
-                    return true;
-                }
-                else if (board[yValue + 1][xValue] == 16) {
-                    p.setLocation(1+((xValue)*X_SIZE),1+(1+yValue*Y_SIZE));
-                    return true;
-                }
-                else if (board[yValue - 1][xValue] == 16) {
-                    p.setLocation(1+((xValue)*X_SIZE),1+(1-yValue*Y_SIZE));
-                    return true;
-                }
-                return false;
             }
             catch (ArrayIndexOutOfBoundsException ae){
-                return false;
+
+                }
+            try{
+                 if (board[yValue + 1][xValue] == 16) {
+                    temp = Integer.parseInt(b.getText());
+                    board[yValue][xValue] = 16;
+                    board[yValue + 1][xValue] = temp;
+                    return true;
+                }
             }
-        }
+            catch (ArrayIndexOutOfBoundsException ae){
+
+            }
+            try{
+            if (board[yValue][xValue - 1] == 16) {
+                    temp = Integer.parseInt(b.getText());
+                    board[yValue][xValue] = 16;
+                    board[yValue][xValue - 1] = temp;
+                    return true;
+                }
+            }
+            catch (ArrayIndexOutOfBoundsException ae){
+
+            }
+            try{
+            if (board[yValue - 1][xValue] == 16) {
+                    temp = Integer.parseInt(b.getText());
+                    board[yValue][xValue] = 16;
+                    board[yValue - 1][xValue] = temp;
+                    return true;
+                }
+            }
+            catch (ArrayIndexOutOfBoundsException ae){
+
+            }
+            return false;
+    }
 
         public void swapTiles(JButton b) {
 
             if (hasNeighbour(b) == true) {
-                int getX = (int)p.getX();
-                int getY = (int)p.getY();
-
-                int xValue = getX / X_SIZE;
-                int yValue = getY / Y_SIZE;
-                int x = b.getX();
-                int y = b.getY();
-                b.setLocation(p);
-                button[yValue][xValue].setLocation(x, y);
+                updateBoard();
             }
         }
 
@@ -185,6 +207,13 @@ public class GameFrameV2 extends JFrame implements ActionListener {
                 }
             }
             return board;
+        }
+        public void updateBoard() {
+            for (int i = 0; i < 4; i++) {
+                for (int j = 0; j < 4; j++) {
+                    button[i][j].setText(Integer.toString(board[i][j]));
+                }
+            }
         }
 
 
