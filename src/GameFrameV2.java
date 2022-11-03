@@ -1,24 +1,23 @@
 
 
 import javax.swing.*;
+import javax.swing.border.Border;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.util.Arrays;
-import java.util.Collections;
 import java.util.Random;
 
 public class GameFrameV2 extends JFrame implements ActionListener {
-
     private final int X_SIZE = 96;
     private final int Y_SIZE = 90;
     JButton[][] button;
+    JButton b1 = new JButton("New Game");
+    JButton b2 = new JButton("Solve Board");
     int[][] board;
     int row;
     int col;
-    JFrame frame;
-    JLabel[][] label;
     JPanel mainPanel;
+    JPanel bottomPanel;
 
     public GameFrameV2() {
         col = 4;
@@ -29,64 +28,69 @@ public class GameFrameV2 extends JFrame implements ActionListener {
 
     public void frameGUI() {
 
-        frame = new JFrame("15-GAME");
-        mainPanel = new JPanel();
-        mainPanel.setLayout(new GridLayout(4, 4));
-        button = new JButton[row][col];
-        label = new JLabel[row][col];
+        setTitle("15 Game");
+        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        setLayout(null);
+        setResizable(false);
 
-        this.setDefaultCloseOperation(EXIT_ON_CLOSE);
-        this.setResizable(false);
+        setBounds(100,100,414,500);
+        Border br = BorderFactory.createLineBorder(Color.black);
+        Container c=getContentPane();
 
-        this.pack();
-        this.getContentPane().setBackground(Color.GRAY);
-        /*Används ej i denna version
-        JMenuBar jmb = new JMenuBar();
-        setJMenuBar(jmb);
-        JMenu menu1 = new JMenu("Actions");
-        menu1.setSize(150, 15);
-        JMenuItem newGame = new JMenuItem("New Game");
-        JMenuItem solveBoard = new JMenuItem("Solve Board");
-        JMenuItem exitGame = new JMenuItem("Exit");*/
+        mainPanel=new JPanel();
+        bottomPanel=new JPanel();
 
-        this.newGame();
+        makeButtons();
+
+        b1.setBounds(1,200,199,50);
+        b1.setBackground(Color.GRAY);
+        b1.setBorder(BorderFactory.createLineBorder(Color.black, 2));
+        b1.addActionListener(this);
+
+        b2.setBounds(200,200,199,50);
+        b2.setBackground(Color.GRAY);
+        b2.setBorder(BorderFactory.createLineBorder(Color.black, 2));
+        b2.addActionListener(this);
+
         for (int i = 0; i < row; i++) {
             for (int j = 0; j < col; j++) {
-                button[i][j] = new JButton();
-                String text = Integer.toString(board[i][j]);
-                button[i][j].setText(text);
-                button[i][j].addActionListener(this);
-                int val = board[i][j];
-
-                label[i][j] = new JLabel("");
-                {
-
-                }
-                button[i][j].setBorder(BorderFactory.createLineBorder(Color.black, 2));
-                button[i][j].setBackground(Color.LIGHT_GRAY);
                 mainPanel.add(button[i][j]);
             }
         }
-        frame.add(mainPanel);
-        frame.setVisible(true);
-        frame.setSize(400, 400);
-        frame.setResizable(false);
-        frame.setLocationRelativeTo(null);
-        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-    }
 
+        bottomPanel.add(b1);
+        bottomPanel.add(b2);
+
+        mainPanel.setBackground(Color.BLACK);
+        mainPanel.setBounds(0,1,400,399);
+
+        bottomPanel.setBackground(Color.BLACK);
+        bottomPanel.setBounds(0,401,400,50);
+
+        mainPanel.setBorder(br);
+        mainPanel.setLayout(new GridLayout(row, col));
+        c.add(mainPanel);
+
+        bottomPanel.setLayout(new GridLayout());
+        c.add(bottomPanel);
+
+        makeBlock();
+        setVisible(true);
+
+    }
     public void newGame() {
         shuffleArray();
     }
 
     Boolean isSolved() {
         int count = 1;
+
         for (int i = 0; i < row; i++) {
             for (int j = 0; j < col; j++) {
-                if (board[i][j] != count && board[i][j] != -1) {
+                if(board[i][j] != count) {
                     return false;
                 }
-                count = count + 1;
+                count++;
             }
         }
         return true;
@@ -104,31 +108,31 @@ public class GameFrameV2 extends JFrame implements ActionListener {
     }
     @Override
     public void actionPerformed(ActionEvent ae) {
-        Boolean solution = isSolved();
         updateBoard();
+        if(ae.getSource()==b1){
+            shuffleArray();
+            updateBoard();
+        }
+        else if(ae.getSource()==b2){
+            solveBoard();
+            updateBoard();
+        }
         for (int i = 0; i < board.length; i++) {
             for (int j = 0; j < board.length; j++) {
                 if(button[i][j]==ae.getSource()) {
                     swapTiles(button[i][j]);
-
-
-                    for (int k = 0; k < 4; k++) {
-                        for (int l = 0; l < 4; l++) {
-                            System.out.println(board[k][l]);
-                        }
+                    if(isSolved()){
+                        solvedItIs();
                     }
                 }
             }
         }
     }
 
-
     public boolean hasNeighbour(JButton b) {
         int xValue = b.getX() / X_SIZE;
         int yValue = b.getY() / Y_SIZE;
         int temp;
-
-
 
             try {
                 if (board[yValue][xValue + 1] == 16) {
@@ -177,49 +181,87 @@ public class GameFrameV2 extends JFrame implements ActionListener {
             return false;
     }
 
-        public void swapTiles(JButton b) {
+    public void swapTiles(JButton b) {
 
-            if (hasNeighbour(b) == true) {
+        if (hasNeighbour(b)) {
                 updateBoard();
-            }
+        }
+    }
+    public void shuffleArray(){
+
+        int[] arr = new int[board.length* board.length];
+
+        for (int i = 0; i < board.length* board.length; i++) {
+            arr[i] = i+1;
         }
 
-        public int[][] shuffleArray(){
+        Random r = new Random();
 
-            int[] arr = new int[board.length* board.length];
-            for (int i = 0; i < board.length* board.length; i++) {
-                arr[i] = i+1;
+        for (int i = 0; i < board.length* board.length; i++) {
+            int randomIndexToSwap = r.nextInt(arr.length);
+            int temp = arr[randomIndexToSwap];
+            arr[randomIndexToSwap] = arr[i];
+            arr[i] = temp;
+        }
+
+        int k = 0;
+        for (int i = 0; i < board.length; i++) {
+            for (int j = 0; j < board.length; j++) {
+                board[i][j] = arr[k];
+                k++;
             }
-
-            Random r = new Random();
-
-            for (int i = 0; i < board.length* board.length; i++) {
-                    int randomIndexToSwap = r.nextInt(arr.length);
-                    int temp = arr[randomIndexToSwap];
-                    arr[randomIndexToSwap] = arr[i];
-                    arr[i] = temp;
+        }
+    }
+    public void updateBoard() {
+        for (int i = 0; i < 4; i++) {
+            for (int j = 0; j < 4; j++) {
+                button[i][j].setText(Integer.toString(board[i][j]));
+                makeBlock();
             }
-            int k = 0;
-            for (int i = 0; i < board.length; i++) {
-                for (int j = 0; j < board.length; j++) {
-                    board[i][j] = arr[k];
-                            k++;
+        }
+    }
+
+    public void makeButtons() {
+        button = new JButton[row][col];
+        this.newGame();
+        for (int i = 0; i < row; i++) {
+            for (int j = 0; j < col; j++) {
+                button[i][j] = new JButton();
+                String text = Integer.toString(board[i][j]);
+                button[i][j].setText(text);
+                button[i][j].addActionListener(this);{}
+                button[i][j].setBorder(BorderFactory.createLineBorder(Color.black, 2));
+                button[i][j].setBackground(Color.LIGHT_GRAY);
+                button[i][j].setSize(X_SIZE, Y_SIZE);
+            }
+        }
+    }
+    public void makeBlock(){
+        for (int i = 0; i < board.length; i++) {
+            for (int j = 0; j < board.length; j++) {
+                if (board[i][j] == 16) {
+                    button[i][j].setText("");
                 }
             }
-            return board;
         }
-        public void updateBoard() {
-            for (int i = 0; i < 4; i++) {
-                for (int j = 0; j < 4; j++) {
-                    button[i][j].setText(Integer.toString(board[i][j]));
-                }
+    }
+    public void solveBoard(){
+        int k = 1;
+        for (int i = 0; i < board.length; i++) {
+            for (int j = 0; j < board.length; j++) {
+                board[i][j] = k;
+                k++;
+            }
+            if(isSolved()){
+                solvedItIs();
             }
         }
+        updateBoard();
+        isSolved();
+    }
 
-
-
-        public static void main (String[]args){
-        GameFrameV2 GF = new GameFrameV2();
+    public static void main (String[]args){
+        new GameFrameV2();
     }
 }
 
