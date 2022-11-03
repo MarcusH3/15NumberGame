@@ -74,6 +74,7 @@ public class GameFrameV2 extends JFrame implements ActionListener {
         bottomPanel.setLayout(new GridLayout());
         c.add(bottomPanel);
 
+        setLocationRelativeTo(null);
         makeBlock();
         setVisible(true);
 
