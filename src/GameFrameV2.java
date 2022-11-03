@@ -84,16 +84,6 @@ public class GameFrameV2 extends JFrame implements ActionListener {
     }
 
     Boolean isSolved() {
-        int count = 1;
-
-        for (int i = 0; i < row; i++) {
-            for (int j = 0; j < col; j++) {
-                if(board[i][j] != count) {
-                    return false;
-                }
-                count++;
-            }
-        }
         return true;
     }
 
@@ -184,42 +174,12 @@ public class GameFrameV2 extends JFrame implements ActionListener {
 
     public void swapTiles(JButton b) {
 
-        if (hasNeighbour(b)) {
-                updateBoard();
-        }
     }
     public void shuffleArray(){
 
-        int[] arr = new int[board.length* board.length];
-
-        for (int i = 0; i < board.length* board.length; i++) {
-            arr[i] = i+1;
-        }
-
-        Random r = new Random();
-
-        for (int i = 0; i < board.length* board.length; i++) {
-            int randomIndexToSwap = r.nextInt(arr.length);
-            int temp = arr[randomIndexToSwap];
-            arr[randomIndexToSwap] = arr[i];
-            arr[i] = temp;
-        }
-
-        int k = 0;
-        for (int i = 0; i < board.length; i++) {
-            for (int j = 0; j < board.length; j++) {
-                board[i][j] = arr[k];
-                k++;
-            }
-        }
     }
     public void updateBoard() {
-        for (int i = 0; i < 4; i++) {
-            for (int j = 0; j < 4; j++) {
-                button[i][j].setText(Integer.toString(board[i][j]));
-                makeBlock();
-            }
-        }
+
     }
 
     public void makeButtons() {
