@@ -106,6 +106,10 @@ public class GameFrameV2 extends JFrame implements ActionListener {
         frame.setVisible(true);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setLocationRelativeTo(null);
+        JLabel j = new JLabel("You win");
+        j.setHorizontalAlignment(JLabel.CENTER);
+        j.setFont(new Font("Verdana", Font.PLAIN, 18));
+        frame.add(j);
     }
     @Override
     public void actionPerformed(ActionEvent ae) {
